@@ -405,6 +405,9 @@ public class UnifiedSystemUserController extends BaseController {
     public ModelAndView showUpdateUnifiedSystemUser(HttpServletRequest request,
             @ModelAttribute("form") @Valid UnifiedSystemUserForm form, BindingResult result,
             RedirectAttributes redirectAttributes) {
+        // A failed save re-renders this page; hide Previous/Next so they cannot post to
+        // a missing URL.
+        request.setAttribute(DISPLAY_PREV_NEXT, false);
         boolean doFiltering = true;
         formValidator.validate(form, result);
         if (result.hasErrors()) {
