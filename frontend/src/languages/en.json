@@ -4788,6 +4788,7 @@
   "logging.management.logger.helper": "e.g., org.openelisglobal, root",
   "logging.management.success": "Log level set to {level} for {logger}",
   "login.account.disabled": "Account Disabled",
+  "login.brand.name": "Categorical Data",
   "login.account.locked": "Account Locked",
   "login.complexity.message": "Password must : ",
   "login.complexity.message.1": "Must Be at least 7 characters",

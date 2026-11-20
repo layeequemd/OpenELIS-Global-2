@@ -43,6 +43,7 @@ function Login(props) {
     configurationProperties?.useSaml === "true" &&
     configurationProperties?.useSamlLoginPage === "false" &&
     !userSessionDetails.authenticated;
+  const [logoFailed, setLogoFailed] = useState(false);
   const userIsActiveRef = useRef(false); // Track if user is actively typing without triggering re-renders
   const activityResetTimerRef = useRef(null);
   const markUserActive = useCallback(() => {
@@ -112,33 +113,33 @@ function Login(props) {
   }, [userSessionDetails]);
 
   const loginMessage = () => {
-    // Add cache-busting parameter to prevent stale logo display after upload
-    const logoSrc = loginLogoUrl
-      ? `${config.serverBaseUrl}${loginLogoUrl}?v=${logoVersion}`
-      : `images/openelis_logo_full.png`;
-
     return (
       <>
         <Column lg={6} md={0} sm={0} />
         <Column lg={4} md={8} sm={4}>
-          <picture>
-            <img
-              src={logoSrc}
-              alt="fullsize logo"
-              width="300"
-              height="56"
-              style={{ objectFit: "contain" }}
-              onError={(e) => {
-                // Fallback to default logo if custom logo fails to load
-                e.target.src = `images/openelis_logo_full.png`;
-              }}
-            />
-          </picture>
-        </Column>
-        <Column lg={6} md={0} sm={0} />
-        <Column lg={6} md={0} sm={0} />
-        <Column lg={4} md={8} sm={4}>
-          <FormattedMessage id="login.notice.message" />
+          {loginLogoUrl && !logoFailed ? (
+            <picture>
+              <img
+                // Add cache-busting parameter to prevent stale logo display after upload
+                src={`${config.serverBaseUrl}${loginLogoUrl}?v=${logoVersion}`}
+                alt="fullsize logo"
+                width="300"
+                height="56"
+                style={{ objectFit: "contain" }}
+                onError={() => {
+                  // Fallback to default brand if custom logo fails to load
+                  setLogoFailed(true);
+                }}
+              />
+            </picture>
+          ) : (
+            <div className="login-brand">
+              <img src="images/openelis_logo.png" alt="" height="56" />
+              <span className="login-brand-name">
+                <FormattedMessage id="login.brand.name" />
+              </span>
+            </div>
+          )}
         </Column>
         <Column lg={6} md={0} sm={0} />
       </>

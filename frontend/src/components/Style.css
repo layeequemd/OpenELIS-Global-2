@@ -158,6 +158,19 @@ li.clickableUserDetails:hover {
   margin-right: auto;
 }
 
+/* Default login brand: icon + translatable name (no custom logo uploaded) */
+.login-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.login-brand-name {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
 /* REMOVED: Forcing black text caused dark mode input issues 
    Carbon's <Theme theme="white"> handles this correctly */
 .inputText {
