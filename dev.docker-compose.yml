@@ -134,6 +134,10 @@ services:
             - './frontend/package.json:/app/package.json:ro'
             - './frontend/package-lock.json:/app/package-lock.json:ro'
             - './frontend/vite.config.ts:/app/vite.config.ts:ro'
+            # Newer upstream code imports the module SDK workspace package, and the
+            # page title lives in index.html.
+            - './frontend/packages:/app/packages:ro'
+            - './frontend/index.html:/app/index.html:ro'
         environment:
             - CHOKIDAR_USEPOLLING=true
         tty: true
