@@ -54,6 +54,9 @@ services:
             - DEFAULT_PW=adminADMIN! 
             - TZ=${TZ:-UTC}
             - SPRING_LIQUIBASE_CONTEXTS=test
+            # The dev database's secrets were encrypted with the old default key, which
+            # upstream removed from common.properties; the app now refuses to start without one.
+            - OE_ENCRYPTION_PASSWORD=${OE_ENCRYPTION_PASSWORD:-kspass}
               # context.xml doesn't seem to be able to pick up environment variables directly, so we are passing them in as CATALINA_OPTS
             - CATALINA_OPTS=-Ddatasource.url=jdbc:postgresql://db.openelis.org:5432/clinlims -Ddatasource.username=clinlims -Dspring.liquibase.contexts=test
         volumes:
@@ -63,7 +66,9 @@ services:
             - ./volume/programs/:/var/lib/openelis-global/programs
             - ./volume/logs/oeLogs:/var/lib/openelis-global/logs
             - ./volume/logs/tomcatLogs/:/usr/local/tomcat/logs
-            - ./volume/tomcat/oe_server.xml:/usr/local/tomcat/conf/server.xml
+            # Pre-4586 Tomcat config: the local dev image lacks the new trust manager
+            # class and the oe.ssl.keystorepassword property the new oe_server.xml needs.
+            - ./volume/tomcat/oe_server.local.xml:/usr/local/tomcat/conf/server.xml
             - ./target/OpenELIS-Global.war:/usr/local/tomcat/webapps/OpenELIS-Global.war  # Mount locally built WAR for development
             - ./volume/properties:/var/lib/openelis-global/properties
             - ./volume/odoo/odoo-test-product-mapping.csv:/var/lib/openelis-global/odoo/odoo-test-product-mapping.csv
