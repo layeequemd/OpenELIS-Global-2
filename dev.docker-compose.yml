@@ -89,6 +89,8 @@ services:
             - source: extra.properties
 
     fhir.openelis.org:
+        # Opt-in (about 1.2 GB of memory): start with --profile fhir when testing FHIR.
+        profiles: ["fhir"]
         image: hapiproject/hapi:v6.6.0-tomcat
        # platform: linux/amd64
         depends_on:
